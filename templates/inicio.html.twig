@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block main %}
+<div class="jumbotron jumbotron-fluid" style="margin-top:85px;">
+        <div class="container">
+            <h1 class="display-4">Reserva en cualquier restaurante, sin ningun tipo de coste.</h1>
+            <p class="lead"></strong></p>
+            <h4></h4>
+        </div>
+        <a href="{{path('inicio')}}"><img style="float:left;" src={{ asset("img/logor.png")}} class="rounded-circle" alt="Reservas-foto"></a>
+</div>
+{{"now"| date("m/d/Y")}}
+{% endblock %}

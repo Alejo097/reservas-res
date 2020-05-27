@@ -1,0 +1,14 @@
+{% extends "layout.html.twig" %}
+
+{% block title %} Inicio - admin {% endblock %}
+
+{% block body %}
+
+    <header class="text-center">
+    {% block header %}
+        {{"now"| date("m/d/Y")}}    
+    {% endblock %}
+    </header>
+
+    
+{% endblock %}
