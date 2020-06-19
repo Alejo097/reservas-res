@@ -1,0 +1,128 @@
+{% extends "layout.html.twig" %}
+{% block title %}Restaurante{% endblock %}
+{% block main %}     
+{% if is_granted('ROLE_USER') %}
+  <div class="container">
+    <div class="row">
+          <div class="col-sm-8">
+              <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for imagen in imagenes|slice(0,4) %}
+                          <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0 }}" {% if loop.index0 == 0 %}class="active"> {% endif %}</li>                      
+                        {% endfor %}
+                      </ol>
+                      <div class="carousel-inner">
+                        {% for imagen in imagenes|slice(0,4) %} 
+                          <div {% if loop.index0 == 0 %} class="carousel-item active" {% else %} class="carousel-item" {% endif %}> 
+                            <img style="width: 100%;" src="{{ asset('restaurantesIMG/'~imagen.imagen.imagen) }}" height="500" class="d-block w-100" alt="imagenes-restaurantes">   
+                          </div>
+                        {% endfor %}
+                      </div>
+                  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+              </div>
+          </div>
+          <div class="col-sm-4">
+            {# tarjeta de reserva #}
+            <div class="card" >
+                {% if restaurante.favorito %}
+                  <a style="position:absolute; right:0" href="{{ path('res_favoritos',{'id':restaurante.id, 'id_user':app.user.id })}}"><i class="fas fa-star fa-lg" style="margin: 7px;color:#4917C4;"></i></a>
+                {% else %}
+                  <a style="position:absolute; right:0" href="{{ path('res_favoritos',{'id':restaurante.id, 'id_user':app.user.id })}}"><i class="far fa-star fa-lg" style="margin: 7px; color:#4917C4;"></i></a>
+                {% endif %}
+                <h4 class="card-header" style="color:#4917C4">{{restaurante.nombre}}</h4>
+                <div class="card-body">
+                  <h5 class="card-title"> {{ restaurante.tipo }}</h5>
+                  <p class="card-text">{{ restaurante.direccion }}</p>
+                  <p class="card-text">{{ restaurante.ubicacion.provincia }}</p>
+                  <a href="{{ path('reservar', {'id_res':restaurante.id, 'id_user':app.user.id })}}" class="btn btn-dark">Reservar</a>
+                  {% if app.user.puntos >= 100 %}
+                    <a href="{{ path('reservar-puntos', {'id_res':restaurante.id, 'id_user':app.user.id})}}" class="btn btn-success">Reservar con puntos</a>
+                  {% else %}
+                    <span  class="d-inline-block" data-toggle="popover" data-content="Debes tener mas de 100 puntos para esta opción.">
+                      <button class="btn btn-succes" style="pointer-events: none;" type="button" disabled>Reservar con puntos</button>
+                    </span>
+                  {% endif %}
+                  <small class="text-center">Servicio gratuito - Aprovecha tus puntos</small>
+                </div>
+            </div>
+          </div>
+      </div>
+      <hr />
+      <div class="row">
+        {# puntuacion #}
+          <div class="col-sm text-center">
+            <h2>Puntuación <i class="fas fa-star-half-alt"></i></h2>
+            <div class="card shadow-sm p-3 mb-5 bg-light" style="color:#4917C4;">
+              <div class="card-body">
+                {% if media == null %}
+                  <h1 style="font-size:100px;"> 0 </h1>  
+                {% else %}
+                  <h1 style="font-size:100px;">{{ media }}</h1>
+                {% endif %}
+                <p>Según {{ contador }} comentarios</p>
+              </div>
+            </div>
+            <hr />
+          </div>
+          {# comentarios #}
+          <div class="col-sm-12">
+            <h2>Comentarios <i class="far fa-comments"></i></h2>
+              {% for comentario in comentarios  %}
+              <div class="card mb-3 bg-light border shadow-sm p-3 mb-5" style="max-width: 400px;">
+                <span class="h2 text-right" style="color:#4917C4;">{{ comentario.resena.puntuacion }}</span>
+                <p class="card-title font-weight-bold" style="position: absolute;">{{ comentario.usuario.nombre }} {{ comentario.usuario.apellido }}</p>
+                <p class="card-text font-italic">{{ comentario.resena.comentario }}</p>
+                <p class="card-text"><small class="text-muted">{{ comentario.fecha|date('F d, Y')}}</small></p>
+              </div>              
+            {% endfor %}
+            <hr />
+          </div>
+          {# ofertas #}
+          <div class="col-sm-12 text-center" style="margin: 0 auto" >
+              <h2>Promociones <i class="fas fa-percentage"></i></h2>  
+              <hr />
+              <div class="row">
+                {% for promocion in promociones %}
+                <div class="col-lg-12 col-md-6 col-sm-6 col-xs-8">
+                  <div class="card text-white bg-success mb-3" style="width: 100%;">
+                      <div class="card-header"><span class="font-weight-bold" style="font-size: 17px;">Oferta</span></div>
+                      <div class="card-body">
+                        <p class="card-text"><span style="font-size: 50px;">{{ promocion.oferta.descuento }} <i class="fas fa-percentage"></i></span></p>
+                        <p class="card-text"><span class="font-weight-bold" style="font-size: 20px;">{{ promocion.oferta.descripcion }}</span></p>
+                        <p class="card-text" style="color:#4917C4;">Válido hasta:  {{ promocion.oferta.fechahora|date() }}</p>
+                        <small><p class="card-text">Aprovecha !</p></small>
+                      </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+          </div>
+          <div class="col-sm-12">
+            <hr />
+              <h2>Ubicación <i class="fas fa-map-marker-alt"></i></h2>
+              <div id="map1" style="width:100%; height:300px;">
+              </div>
+              <hr />
+          </div>
+          {# informacion del restaurante #}
+          <div class="col-sm-12">
+              <h2>Infomacion del restaurantes <i class="fas fa-concierge-bell"></i></h2>
+              <hr />
+              <h4>Apertura</h4>
+              <p class="lead">{{ restaurante.informacion.apertura }}</p>
+              <h4>Descripcion</h4>
+              <p class="lead">{{ restaurante.informacion.descripcion }}</p>
+              <h4>Servicios</h4>
+              <p class="lead">{{ restaurante.informacion.servicios }}</p>
+          </div>
+      </div>
+  </div>
+{% endif %}
+{% endblock %}

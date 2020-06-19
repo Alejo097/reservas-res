@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Entity;
 
 use App\Repository\OfertaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OfertaRepository::class)
@@ -21,13 +21,33 @@ class Oferta
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 2,
+     *      minMessage = "Descuento minimo {{ limit }}",
+     *      maxMessage = "Descuento maximo"
+     *      )
      */
     private $descuento;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "Minino de caracteres {{ limit }}",
+     *      maxMessage = "Maximo de caracteres {{ limit }}"
+     *      )
      */
     private $descripcion;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+    */
+    private $fecha_hora;
 
     /**
      * @ORM\OneToMany(targetEntity=Promocion::class, mappedBy="oferta")
@@ -68,6 +88,18 @@ class Oferta
         return $this;
     }
 
+    public function getFechaHora(): ?\DateTimeInterface
+    {
+        return $this->fecha_hora;
+    }
+
+    public function setFechaHora(\DateTimeInterface $fecha_hora): self
+    {
+        $this->fecha_hora = $fecha_hora;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Promocion[]
      */
@@ -82,7 +114,6 @@ class Oferta
             $this->promocion[] = $promocion;
             $promocion->setOferta($this);
         }
-
         return $this;
     }
 
@@ -95,7 +126,6 @@ class Oferta
                 $promocion->setOferta(null);
             }
         }
-
         return $this;
     }
 }

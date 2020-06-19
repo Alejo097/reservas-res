@@ -1,0 +1,45 @@
+{% extends 'layout.html.twig' %}
+{% block title %}Restaurante{% endblock %}
+
+{% block main %}
+{% if is_granted('ROLE_USER') %}
+<div class="container">
+    <div class="row">
+    <div class="col-12">
+        {% form_theme form_busqueda 'bootstrap_3_horizontal_layout.html.twig' %}
+        {{ form_start(form_busqueda) }}
+        {{ form_widget(form_busqueda) }}
+        {{ form_end(form_busqueda) }}
+        <hr />
+    </div>
+    
+    {% if restaurantes != null %}
+        {% for restaurante in restaurantes %}
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8">
+            <div class="card bg-light" style="width: 18rem; margin-bottom:10px;">
+                {% if restaurante.favorito %}
+                    <i class="fas fa-star fa-lg" style="margin:5px; color:#4917C4"></i>
+                {% else %}
+                    <i class="far fa-star fa-lg" style="margin:5px; color:#4917C4"></i>
+                {% endif %}
+
+                <img src="{{ asset('imgRestaurantesPerfil/'~restaurante.imagen) }}" style="padding-left: 5px; padding-right:5px;" class="card-img-top rounded" width="100%" height="140" alt="imagen-perfil-restaurante">
+                <div class="card-body">
+                    <p class="float-right" style="font-size:xx-large; color:#4917C4;">{{ restaurante.datos.mediarestpuntuacion }}</p>
+                    <p class="font-weight-light">{{ restaurante.tipo }}</p>
+                    <h5 class="card-title font-weight-bold">{{ restaurante.nombre }}</h5>
+                    <p class="font-weight-light">{{ restaurante.ubicacion.provincia }}</p>
+                    <p class="font-weight-light">{{ restaurante.direccion }}</p>
+                    <a href="{{ path('restaurante', {'id':restaurante.id})}}" class="btn btn-dark">Ver restaurante</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="lead" style="font-size: 50px; margin:auto; color:#4917C4;">Sin resultados ...</p>
+    {% endif %}
+    </div>
+</div>    
+{% endif %}
+{% endblock %}

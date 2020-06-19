@@ -2,37 +2,17 @@
 
 {% block title %}Nuevo Usuario{% endblock %}
 {% block body %}
-
-<h2 class="text-center">Añadir usuario</h2>
-
-    {% form_theme formulario 'bootstrap_3_horizontal_layout.html.twig' %}
-    {{ form_start(formulario, { 'enctype':"multipart/form-data"}) }}
-    {{ form_widget(formulario) }}
-    {{ form_end(formulario) }}
-
+<div class="form-row">
+  <div class="col shadow-lg p-3 mb-5 bg-white rounded border"> 
+    <a href="{{ path('login') }}" style="color:#4917C4;">
+      <i class="fas fa-arrow-circle-left fa-3x" style="float:left" title="login"></i>
+    </a>
+    <h1 class="text-center display-4">Crear cuenta usuario <i class="fas fa-user-plus"></i></h1>
+  <hr />
+  {% form_theme formulario 'bootstrap_4_horizontal_layout.html.twig' %}
+  {{ form_start(formulario,{'attr': {'novalidate': 'novalidate'}}) }}
+  {{ form_widget(formulario) }}
+  {{ form_end(formulario) }}
+  </div>
 </div>
-<!-- Button trigger modal 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-  </button>
-  
-     Modal 
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Crear tu usuario</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
 {% endblock %}

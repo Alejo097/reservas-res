@@ -6,6 +6,7 @@ use App\Repository\ResenaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ResenaRepository::class)
@@ -21,6 +22,7 @@ class Resena
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $comentario;
 
@@ -28,11 +30,6 @@ class Resena
      * @ORM\Column(type="float")
      */
     private $puntuacion;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $fecha_hora;
 
     /**
      * @ORM\OneToMany(targetEntity=Comentar::class, mappedBy="resena")
@@ -69,18 +66,6 @@ class Resena
     public function setPuntuacion(float $puntuacion): self
     {
         $this->puntuacion = $puntuacion;
-
-        return $this;
-    }
-
-    public function getFechaHora(): ?\DateTimeInterface
-    {
-        return $this->fecha_hora;
-    }
-
-    public function setFechaHora(\DateTimeInterface $fecha_hora): self
-    {
-        $this->fecha_hora = $fecha_hora;
 
         return $this;
     }

@@ -1,0 +1,23 @@
+{% extends "perfil_usuario.html.twig" %}
+
+{% block title %} Puntos {% endblock %}
+{% block main %}
+{% if is_granted('ROLE_USER') %}
+
+<div class="row">
+    <div class="col">
+        <p class="lead"> </p>
+        <div class="border shadow-sm p-3 mb-5">
+        <p style="float:right; font-size:80px; color:#4917C4;">{{ usuario.puntos }}</p>
+        <p class="display-4">Puntos actuales </p>
+        <p class="lead">Por cada numero de puntos, tienes los siguientes descuentos:</p>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"></li>
+            <li class="list-group-item">100 puntos <i class="far fa-hand-point-right fa-lg"></i> <span class="h2"> 10€</span></li>
+            <li class="list-group-item">200 puntos <i class="far fa-hand-point-right fa-lg"></i> <span class="h2"> 20€</span></li>
+        </ul>
+        <div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -12,8 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsuarioRepository::class)
- * @UniqueEntity("email")
-
+ * @UniqueEntity("email", message="Este correo ya esta registrado.")
  */
 class Usuario implements UserInterface, \Serializable
 {
@@ -26,36 +25,51 @@ class Usuario implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
      */
     private $nombre;
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
      */
     private $apellido;
 
     /**
      * @ORM\Column(type="string", length=60)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 60,
+     *      minMessage = "tu contraseña debe tener al menos {{ limit }} caracteres",
+     *      maxMessage = "maximo de caracteres {{ limit }}",
+     *)
+     * 
      */
     private $contrasena;
 
     /**
      * @ORM\Column(name="email", type="string", length=60, unique=true)
-     * @Assert\Email()
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
+     * @Assert\Email(message="No es un correo valido.")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="El campo no debe estar vacio.")
+     * @Assert\Regex("/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/",
+     * message="Numero invalido.")
      */
     private $telefono;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Image(
+     *     minWidth = 200,
+     *     maxWidth = 600,
+     *     minHeight = 200,
+     *     maxHeight = 600
+     * )
      */
     private $imagen;
 

@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Repository\PromocionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=PromocionRepository::class)
  */
-class Promocion
+class Promocion 
 {
     /**
      * @ORM\Id()
@@ -16,22 +17,6 @@ class Promocion
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $fecha;
-
-    /**
-     * @ORM\Column(type="time")
-     */
-    private $hora;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Plato::class, inversedBy="promocion")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $plato;
 
     /**
      * @ORM\ManyToOne(targetEntity=Oferta::class, inversedBy="promocion")
@@ -48,42 +33,6 @@ class Promocion
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFecha(): ?\DateTimeInterface
-    {
-        return $this->fecha;
-    }
-
-    public function setFecha(\DateTimeInterface $fecha): self
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    public function getHora(): ?\DateTimeInterface
-    {
-        return $this->hora;
-    }
-
-    public function setHora(\DateTimeInterface $hora): self
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
-    public function getPlato(): ?Plato
-    {
-        return $this->plato;
-    }
-
-    public function setPlato(?Plato $plato): self
-    {
-        $this->plato = $plato;
-
-        return $this;
     }
 
     public function getOferta(): ?Oferta

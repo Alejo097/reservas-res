@@ -1,0 +1,55 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Perfil restaurante{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+
+<p class="display-4">Perfil Restaurante</p>
+<hr />
+{% for flash_message in app.session.flashbag.get('ubi-nice') %}
+<div class="alert alert-success">
+{{ flash_message }}
+</div>
+{% endfor %}
+
+{% for flash_message in app.session.flashbag.get('datos') %}
+<div class="alert alert-success">
+{{ flash_message }}
+</div>
+{% endfor %}
+<div class="row">
+    <div class="col-10 border">
+        <p class="lead">Esta será la imagen vista para todos los clientes, recuerde escoger una imagen <strong>acorde y compatible</strong> a su restaurante para una mayor impresión.</p>
+        <img src="{{ asset('imgRestaurantesPerfil/'~restaurante.imagen)}}" alt="img-perfil" width="400" height="300" class="shadow-sm p-3 mb-5 bg-white rounded">
+    </div>
+    <div class="col-2 border">
+        <small>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item text-primary">Tener en cuenta:</li>
+            <li class="list-group-item">Ancho minino 200px</li>
+            <li class="list-group-item">Ancho maximo 600px</li>
+            <li class="list-group-item">Alto minino 200px</li>
+            <li class="list-group-item">Alto maximo 600px</li>
+            </ul>
+        </small>
+    </div>
+</div>
+  
+<div class="row" style="margin-top: 20px;">
+<div class="col border">
+    {% form_theme formulario 'bootstrap_3_horizontal_layout.html.twig' %}
+    {{ form_start(formulario, { 'enctype':"multipart/form-data"}) }}
+    {{ form_widget(formulario) }}
+    {{ form_end(formulario) }}
+</div>  
+<div class="col border">
+    <h2>Ubicación</h2>
+    <hr />
+    {% form_theme form2 'bootstrap_3_horizontal_layout.html.twig' %}
+    {{ form_start(form2, { 'enctype':"multipart/form-data"}) }}
+    {{ form_widget(form2) }}
+    {{ form_end(form2) }}
+</div>  
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,160 @@
+{% extends "layout_admin.html.twig" %}
+{% block title %}Reservas{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+    {# info #}
+    <div class="btn-group dropleft float-right">
+    <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-info-circle fa-2x"></i>
+    </button>
+    <div class="dropdown-menu">
+    <ul class="list-group list-group-flush">
+        <small style="margin: 10px;"><li class="list-group-item">Estos iconos representan las acciones que se llevaron a cabo despues de que el cliente reservara.</li>
+            <li class="list-group-item"> <i class="fas fa-circle" style="color:#4917C4;"></i> puntos</li>
+            <li class="list-group-item"><i class="fas fa-check-circle" style="color: green;"></i> aceptada</li>
+            <li class="list-group-item"> <i class="fas fa-ban" style="color: red;"></i> cancelada</li>
+            <li class="list-group-item"> <i class="fas fa-comment-slash" style="color: blue;"></i> no comentada</li>
+            <li class="list-group-item"> <i class="fas fa-comment" style="color: blue;"></i> comentada</li>
+            <li class="list-group-item"> <i class="fas fa-times-circle" style="color: red;"></i> cancelada por restaurante</li>
+        </small>
+    </ul>
+    </div>
+    </div>
+    <p class="display-4">Reservas <i class="fas fa-utensils"></i></p>
+    <hr />
+    <div class="row">
+    <div class="col-12">
+    <h2>Reservas Actuales</h2>
+    <hr />
+    <table class="table table-hover table-dark">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">numero personas</th>
+        <th scope="col">fecha</th>
+        <th scope="col">hora</th>
+        <th scope="col">usuario</th>
+        <th scope="col">telefono</th>
+        <th scope="col">estado</th>
+        <th scope="col">puntos</th>
+        <th scope="col">cancelar</th>
+        <th scope="col">aceptar</th>
+    </tr>
+    </thead>
+    {% for reserva in reservas %} 
+    {% if reserva.realizada == 'en-proceso' or reserva.realizada == 'en-proceso-puntos' %}
+    <tbody>
+        <tr>
+            <td>{{ reserva.id }}</td>
+            <td>{{ reserva.numeropersonas }}</td>
+            <td>{{ reserva.fecha|date("F j, Y") }}</td>
+            <td>{{ reserva.hora|date("G:i a")  }}</td>
+            <td>{{ reserva.usuario.nombre }}</td>
+            <td>{{ reserva.usuario.telefono }}</td>
+            <td class="bg-warning">{{ reserva.realizada }}</td>
+            {% if reserva.realizada == 'en-proceso-puntos' %}
+                <td class="bg-success">{{ reserva.puntos }} </a></td>
+            {% else %}
+                <td class="bg-warning">sin puntos</td>
+            {% endif %}
+            <td><a class="btn btn-danger" href="{{ path('cancelar-reserva', {'id':reserva.id}) }}" onclick="return confirm('¿ Desea cancelar esta reserva ?')"><i class="fas fa-ban"></i></a></td>
+            <td><a class="btn btn-success" href="{{ path('aceptar-reserva', {'id':reserva.id}) }}" onclick="return confirm('Esto quiere decir que el cliente acudio al lugar.')"><i class="fas fa-check"></i></a></td>
+        </tr> 
+    {% endif %}
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
+
+    <div class="col-12">
+    <div class="accordion" id="accordionExample">
+    <div class="card">       
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h3>Total reservas</h3>
+            </button>
+            </h2>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">numero personas</th>
+                    <th scope="col">fecha</th>
+                    <th scope="col">hora</th>
+                    <th scope="col">usuario</th>
+                    <th scope="col">telefono</th>
+                    <th scope="col">puntos</th>
+                    <th scope="col">estado</th>
+                </tr>
+                </thead>
+                {% for reserva in reservas %} 
+                {% if reserva.realizada == 'cancelada'
+                or reserva.realizada == 'cancelada-ad'
+                or reserva.realizada == 'cancel-puntos-ad'
+                or reserva.realizada == 'completada'
+                or reserva.realizada == 'completed-no-coment'
+                or reserva.realizada == 'completed-coment'
+                or reserva.realizada == 'cancel-puntos'
+                or reserva.realizada == 'completed-puntos'%}
+                <tbody>
+                    <tr>
+                        <td>{{ reserva.id }}</td>
+                        <td>{{ reserva.numeropersonas }}</td>
+                        <td>{{ reserva.fecha|date("F j, Y") }}</td>
+                        <td>{{ reserva.hora|date("G:i a")  }}</td>
+                        <td>{{ reserva.usuario.nombre }}</td>
+                        <td>{{ reserva.usuario.telefono }}</td>
+
+                        {% if reserva.puntos != null  %}
+                            <td class="bg-success">{{ reserva.puntos }}</td>
+                        {% else %}  
+                            <td class="bg-warning">sin puntos</td>
+                        {% endif %}
+                        
+                        {% if reserva.realizada == 'cancelada' %}
+                            <td><i class="fas fa-ban fa-2x" style="color: red;"></i></td>
+                        
+                        {% elseif reserva.realizada == 'completada' %}
+                            <td><i class="fas fa-check-circle fa-2x" style="color: green;"></i></td>
+                        
+                        {% elseif reserva.realizada == 'completed-coment' %}
+                            <td><i class="fas fa-check-circle fa-2x" style="color: green;"></i> <i class="fas fa-comment fa-2x" style="color:blue"></i></td>
+                        
+                        {% elseif reserva.realizada == 'completed-no-coment' %}
+
+                            <td><i class="fas fa-check-circle fa-2x" style="color: green;"></i><i class="fas fa-comment-slash fa-2x" style="color:blue"></i></td>
+                        
+                        {% elseif reserva.realizada == 'cancel-puntos' %}
+
+                            <td><i class="fas fa-ban fa-2x" style="color: red;"></i> <i class="fas fa-circle fa-2x" style="color:#4917C4;"></i></td>
+            
+                        {% elseif reserva.realizada == 'cancelada-ad' %}
+
+                            <td><i class="fas fa-times-circle fa-2x" style="color: red;"></i></td>
+
+                        {% elseif reserva.realizada == 'cancel-puntos-ad' %}
+
+                            <td><i class="fas fa-times-circle fa-2x" style="color: red;"></i> <i class="fas fa-circle fa-2x" style="color:#4917C4;"></i></td></td>
+
+                        {% elseif reserva.realizada == 'completed-puntos' %}
+
+                            <td><i class="fas fa-check-circle fa-2x" style="color: green;"></i> <i class="fas fa-check-circle fa-2x" style="color:#4917C4;"></i></td>
+                        
+                        {% endif %}
+                    </tr> 
+                {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+{% endif %}
+{% endblock %}

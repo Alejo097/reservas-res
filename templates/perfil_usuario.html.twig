@@ -1,0 +1,53 @@
+{% extends "base.html.twig" %}
+
+{% block title %} Perfil {% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_USER') %}
+    <div class="container-fluid bg-light">
+
+        <nav class="navbar navbar bg-white shadow-sm p-3 mb-5 bg-white rounded">
+                <a class="nav-link" href="{{ path('inicio') }}" tabindex="-1"><img src={{ asset("img/logo.png")}} width="auto" height="60" alt="logo" class=""></a>        
+                <form class="form-inline" method="POST" action="{{ path('buscar-tipo') }}">
+                    <button  style="color:#4917C4;" class="btn btn-outline-dark my-2 my-sm-0" type="submit"><i class="fas fa-search fa-2x"></i></button>
+                </form>    
+                <table>
+                <tr>
+                {% if app.user %}
+                <tr>
+                    <td class="btn-group">
+                        <button type="button" class="btn btn-light dropdown-toggle" style="color:#4917C4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span><strong>{{ app.user.nombre }}</strong></span>
+        
+                            {% if app.user.imagen != null %}
+                                <img src="{{ asset('perfilImg/'~app.user.imagen)}}" alt="..." class="rounded-circle" width="45" height="45" >
+                            {% else %}
+                                <i class="fas fa-user-circle fa-3x"></i>
+                            {% endif %}
+        
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="{{ path('usuario_perfil_edit', {'id':app.user.id}) }}"><button class="dropdown-item" type="button"><i class="fas fa-user"></i> Perfil</button></a>
+                            <a href="{{ path('restaurant_favoritos')}}"><button class="dropdown-item" type="button"><i class="fas fa-star"></i> Favoritos</button></a>
+                            <a href="{{ path('res_comentarios',{'id':app.user.id})}}"><button class="dropdown-item" type="button"><i class="fas fa-comments"></i> Comentarios</button></a>
+                            <a href="{{ path('usuario_reservas',{'id':app.user.id})}}"><button class="dropdown-item" type="button"><i class="fas fa-utensils"></i> Reservas</button></a>
+                            <a href="{{ path('puntos', {'id':app.user.id })}}"><button class="dropdown-item" type="button"><i class="fas fa-circle"></i> Puntos</button></a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ path('logout') }}"><button class="dropdown-item" type="button"><i class="fas fa-sign-out-alt"></i> Salir</button></a>
+                            
+                        </div>
+                    </td>
+                </tr>    
+                {% endif %}
+            </table>
+        </nav>
+        
+        <div class="row">
+            <div class="col shadow-lg p-3 mb-5 bg-white rounded">
+                {% block main %}{% endblock %}
+            </div>
+        </div>
+
+    </div>
+{% endif %}
+{% endblock %}

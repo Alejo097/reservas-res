@@ -1,0 +1,29 @@
+{% extends "perfil_usuario.html.twig" %}
+
+{% block title %} Comentarios{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_USER') %}
+    <h1 class="display-4">Comentarios <i class="far fa-comment-alt"></i><span class="float-right"  style="color:#4917C4;">{{ usuario.comentarios }}</span></h1>
+    <hr />
+    <div class="row">
+        {% if usuario.comentarios != 0 %}
+            {% for comentario in comentarios %}
+            <div class="col-lg-3 col-md-2 col-sm-3">
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <h2 class="card-header">Puntuación: <span style="color:#4917C4;">{{ comentario.resena.puntuacion }}</span></h2>
+                    <div class="card-body">
+                    <h5 class="card-title ">restaurante: <span class="font-weight-bold" style="font-size: 20px;">{{ comentario.restaurante.nombre }}</span></h5>
+                    <p class="card-text font-italic">{{ comentario.resena.comentario }}</p>
+                    <p class="card-text"><small class="text-muted">{{ comentario.fecha|date('F d, Y')}}</small></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+        <div style="margin: auto;">
+        <p class="display-4">Aún no has comentado en ningun restaurante.</p>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

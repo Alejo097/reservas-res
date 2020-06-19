@@ -3,29 +3,40 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+<div class="content text-center">
+    {% if error %}
+        <div class="alert alert-danger text-center" role="alert" style="width: 50%; margin:0 auto; margin-top:10px; margin-bottom:10px;">
+            Correo o contraseña incorrecta
+        </div>
+    {% endif %}
+    {% for flash_message in app.session.flashbag.get('user-nuevo') %}
+    <div class="alert alert-success">
+      {{ flash_message }}
+    </div>
+    {% endfor %}
 
-{% if error %}
-<div class="alert alert-danger text-center" role="alert" style="width: 50%; margin:0 auto; margin-top:10px; margin-bottom:10px;">
-    Correo o contraseña incorrecta.
+    <a href="{{ path('inicio') }}" style="color:#4917C4;">
+        <i class="fas fa-arrow-circle-left fa-3x" style="float:left; margin:10px;" title="Inicio"></i>
+    </a>
+    <div class="border shadow-sm p-3 mb-5 bg-white rounded" style="width:600px; height:500px; margin:auto; margin-top:40px;" >
+        <div style="margin-top:50px; margin-bottom:60px;">
+            <i class="fas fa-user fa-3x" style="position: relative;
+                left: 125px;
+                top: 10px;
+                color:#4917C4;">
+            </i>
+            <a href="{{path('inicio')}}"><img src="{{ asset('img/logo.png')}}" alt="logo" width="200" height="120"></a>
+        </div>
+        <form action="{{ path('login') }}" method="POST" class="form-signin text-center" style="margin-top: 15px; margin-left:30%; margin-right:24%;">
+            <label for="username" class="sr-only">Login:</label>
+            <input type="text" id="username" class="form-control"name="_username" value="{{ lastUsername }}" placeholder="correo:" width="30" style="margin-top: 10px;" autofocus>
+            <label for="inputPassword" class="sr-only">Password:</label>
+            <input type="password" id="inputPassword" class="form-control"name="_password" placeholder="contraseña:" style="margin-top: 10px;">
+            
+            <button class="btn btn-lg btn-dark btn-block" type="submit" style="margin-top: 10px; margin-bottom: 20px;">Iniciar sesion</button>
+        </form>
+    </div>
+    <p>Crea una cuenta en ReservasRes<a href="{{ path('usuario_nuevo') }}" style="color:#4917C4;"> <strong>AQUI!</strong></a></p>
+    <p style="margin-top: 10px;">¿ Aún no tienes una cuenta admin ? <a href="{{ path('admin_nuevo')}}" style="color:#4917C4;"><strong>Registra tu restaurante</strong></a> y disfruta de sus beneficios.</p>
 </div>
-{% endif %}
-
-<div style="text-align:center; width:600px; height:600px; border:1px solid grey; margin:auto; margin-top:100px;" >
-<form action="{{ path('login') }}" method="post" class="form-signin text-center" style="margin-top: 15px; margin-left:30%; margin-right:30%;">
-    <i class="fas fa-user fa-5x"></i>
-    <h1 class="h3 mb-3 font-weight-normal"></h1>
-    <label for="username" class="sr-only">Login:</label>
-    <input type="text" id="username" class="form-control"name="_username" value="{{ lastUsername }}" placeholder="Correo:" width="30" autofocus>
-    <label for="inputPassword" class="sr-only">Password:</label>
-    <input type="password" id="inputPassword" class="form-control"name="_password" placeholder="contraseña:">
-    <input type="checkbox" id="remember_me" name="_remember_me" checked />
-    <label for="remember_me">Recordarme</label>
-    <button class="btn btn-lg btn-outline-dark btn-block" type="submit">Iniciar sesion</button>
-</form>
-
-<a href="">¿ Has olvidado tu contraseña ?</a>
-<p><a href="">Registra tu restaurante</a></p>
-<p>¿ Tiene cuenta-admin ? <a href="{{ path('login-admin')}}" class="">Entra en la seccion admin</a></p></div>
-
-
 {% endblock %}

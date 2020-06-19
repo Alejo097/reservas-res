@@ -1,0 +1,33 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Imagenes{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+
+<h1 class="display-4">Imagenes <i class="far fa-image"></i></h1>
+<hr />
+<p class="lead">Solo se podran subir <span class="font-weight-bold">4 imagenes</span>, cabe recordar que serán estas las que se visualizen en su perfil de restaurante.</p>
+<hr />
+
+<div class="row">
+    <div class="col">
+
+      {% for flash_message in app.session.flashbag.get('img') %}
+      <div class="alert alert-success">
+        {{ flash_message }}
+      </div>
+      {% endfor %}
+
+      {% for flash_message in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger">
+          {{ flash_message }}
+        </div>
+      {% endfor %}
+      {% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+      {{ form_start(form) }}
+      {{ form_widget(form) }}
+      {{ form_end(form) }}    
+    </div>  
+</div>
+{% endif %}
+{% endblock %}

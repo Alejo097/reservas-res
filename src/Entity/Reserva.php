@@ -1,12 +1,12 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\ReservaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ReservaRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ReservaRepository")
  */
 class Reserva
 {
@@ -19,16 +19,19 @@ class Reserva
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="el campo no debe estar vacio.")
      */
     private $numero_personas;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank()
      */
     private $fecha;
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\NotBlank()
      */
     private $hora;
 
@@ -43,6 +46,16 @@ class Reserva
      * @ORM\JoinColumn(nullable=false)
      */
     private $restaurante;
+
+    /**
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private $realizada;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $puntos;
 
     public function getId(): ?int
     {
@@ -105,6 +118,30 @@ class Reserva
     public function setRestaurante(?Restaurante $restaurante): self
     {
         $this->restaurante = $restaurante;
+
+        return $this;
+    }
+
+    public function getRealizada(): ?string
+    {
+        return $this->realizada;
+    }
+
+    public function setRealizada(?string $realizada): self
+    {
+        $this->realizada = $realizada;
+
+        return $this;
+    }
+
+    public function getPuntos(): ?int
+    {
+        return $this->puntos;
+    }
+
+    public function setPuntos(?int $puntos): self
+    {
+        $this->puntos = $puntos;
 
         return $this;
     }

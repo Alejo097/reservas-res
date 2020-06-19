@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repository;
 
 use App\Entity\Restaurante;
@@ -18,6 +17,45 @@ class RestauranteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Restaurante::class);
     }
+
+    public function buscarRestaurante($restaurante, $ubi):array {
+
+        $entity = $this->getEntityManager();
+        $query = $entity->createQuery(
+            "SELECT res  FROM App\Entity\Restaurante res
+             JOIN res.ubicacion u
+             WHERE UPPER(u.provincia) LIKE UPPER(:ubicacion)
+             AND UPPER(res.tipo) LIKE UPPER(:tipo)
+             OR
+             UPPER(res.nombre) LIKE UPPER(:nombre) AND UPPER(u.provincia) LIKE UPPER(:ubicacion)
+             OR 
+             UPPER(res.direccion) LIKE UPPER(:direccion) AND UPPER(u.provincia) LIKE UPPER(:ubicacion)
+            "
+        );
+
+        $query->setParameter("nombre", '%'.$restaurante.'%');
+        $query->setParameter("tipo", '%'.$restaurante.'%');
+        $query->setParameter("ubicacion", '%'.$ubi.'%');
+        $query->setParameter("direccion", '%'.$restaurante.'%');
+        return $query->getResult();
+    }
+
+    /*
+    public function buscar($ubi):array {
+
+        $entity = $this->getEntityManager();
+        $query = $entity->createQuery(
+           "SELECT res 
+            FROM App\Entity\Restaurante res 
+            JOIN res.ubicacion u 
+            WHERE UPPER(u.provincia) LIKE UPPER(:ubicacion)
+            "
+        );
+        
+        $query->setParameter("ubicacion", '%'.$ubi.'%');
+        
+        return $query->getResult();
+    }*/
 
     // /**
     //  * @return Restaurante[] Returns an array of Restaurante objects

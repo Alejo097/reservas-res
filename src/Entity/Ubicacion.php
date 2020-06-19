@@ -59,6 +59,13 @@ class Ubicacion
         return $this->id;
     }
 
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getNombrePais(): ?string
     {
         return $this->nombre_pais;

@@ -1,0 +1,52 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Perfil admin{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+  <p class="display-4">Perfil</p>
+  <hr />
+  {% for flash_message in app.session.flashbag.get('datos-nice-admin') %}
+    <div class="alert alert-success">
+      {{ flash_message }}
+    </div>
+  {% endfor %}
+
+  <div class="row">
+    <div class="col">
+      <div style="width:600px; height:650px; margin-bottom:20px" class="border">
+        {% form_theme formulario 'bootstrap_3_horizontal_layout.html.twig' %}
+        {{ form_start(formulario) }}
+        <div class="col">
+          <i class="fas fa-user-circle fa-5x" style="margin:5px"></i>
+          <h2 class="">{{ app.user.nombre}} {{ app.user.apellido}} </h2>
+          <hr />
+        </div>
+        {{ form_widget(formulario) }}
+        {{ form_end(formulario) }}
+      </div>
+    </div>  
+    
+    <div class="col">  
+      {% for flash_message in app.session.flashbag.get('pass-update') %}
+      <div class="alert alert-success">
+        {{ flash_message }}
+      </div>
+      {% endfor %}
+
+      <div style="width:600px; height:300px;" class="border">
+        {% form_theme form2 'bootstrap_3_horizontal_layout.html.twig' %}
+        {{ form_start(form2) }}
+        {{ form_widget(form2) }}
+        {{ form_end(form2) }}
+      </div>
+
+      {% for flash_message in app.session.flashbag.get('img_error') %}
+          <div class="alert alert-warning">
+              {{ flash_message }}
+          </div>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

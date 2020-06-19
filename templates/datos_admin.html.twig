@@ -1,0 +1,34 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Datos de reservas{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+
+<p class="display-4">Datos de reservas <i class="fas fa-table"></i></p>
+<hr />
+<div class="row">
+    <div class="col">
+        <table class="table table-hover table-dark">
+            <thead class="">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">total opiniones</th>
+                <th scope="col">media puntuacion</th>
+                <th scope="col">reservas canceladas</th>
+                <th scope="col">reservas aceptadas</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ datos.id }}</i></td>
+                <td>{{ datos.totalopiniones }}</i></td>
+                <td>{{ datos.mediarestpuntuacion }}</i></td>
+                <td class="bg-danger">{{ datos.reservascanceladas }}</i></td>
+                <td class="bg-success">{{ datos.reservasaceptadas }}</i></td>
+            </tr> 
+            </tbody> 
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

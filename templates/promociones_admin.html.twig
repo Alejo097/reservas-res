@@ -1,0 +1,32 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Promoción{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+    <p class="display-4">Promoción <i class="fas fa-percentage"></i></p>
+    <hr />
+    <div class="container">
+        <p class="lead">Este espacio esta creado para publicitar cualquier tipo de promoción, hazle saber al cliente tus descuentos. La fecha y hora serán el tiempo <strong>limite</strong> de su promoción.</p>
+        <hr />
+        {% for flash_message in app.session.flashbag.get('promocion-nice') %}
+        <div class="alert alert-success">
+        {{ flash_message }}
+        </div>
+        {% endfor %}
+        {% for flash_message in app.session.flashbag.get('fecha-bad-promocion') %}
+            <div class="alert alert-danger">
+                {{ flash_message }}
+            </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col-12">
+                {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>  
+        </div>    
+    </div>
+{% endif %}
+{% endblock %}

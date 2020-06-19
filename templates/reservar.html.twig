@@ -1,0 +1,26 @@
+{% extends "perfil_restaurante.html.twig" %}
+
+{% block title %}reservar{% endblock %}
+
+{% block main %}
+{% if is_granted('ROLE_USER') %}
+
+<div class="row" style="position:relative; left:19%;">
+  <div class="col-8 shadow-lg p-3 mb-5 bg-light rounded border">
+    {% for flash_message in app.session.flashbag.get('reserva_bad') %}
+    <div class="alert alert-danger">
+      {{ flash_message }}
+    </div>
+    {% endfor %}
+
+    <date style="float:right; padding:5px;">{{"now"| date("d/m/Y")}}</date>
+    <h2 style="color:#4917C4;"> {{ restaurante.nombre }}</h2>
+
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

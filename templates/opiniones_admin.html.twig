@@ -1,0 +1,31 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %} Opiniones{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+
+    <p class="display-4">Opiniones <i class="far fa-comment-alt"></i></p>
+    <hr />
+    <div class="row">
+        {% if opiniones != null %}
+        {% for opinion in opiniones %}
+        <div class="col">
+            <div class="card bg-light mb-3" style="max-width: 15rem;">
+                <h2 class="card-header">Puntuación: <span style="color:#4917C4;">{{ opinion.resena.puntuacion }}</span></h2>
+                <div class="card-body">
+                <p class="card-title font-weight-bold">cliente: <span>{{ opinion.usuario.nombre }} {{ opinion.usuario.apellido }}</span></p>
+                <p class="card-title font-weight-bold ">telefono: <span >{{ opinion.usuario.telefono }}</span></p>
+                <p class="card-title font-weight-bold">correo: <span>{{ opinion.usuario.email }}</span></p>
+                <hr/>
+                <p class="card-text font-italic">{{ opinion.resena.comentario }}</p>
+                <p class="card-text"><small class="text-muted">{{ opinion.fecha|date('F d, Y')}} - {{ opinion.hora|date('G:h') }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+            <p class="lead" style="margin: auto; color:red">Aún no tienes opiniones.</p>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

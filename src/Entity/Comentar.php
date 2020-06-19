@@ -73,7 +73,7 @@ class Comentar
 
         return $this;
     }
-
+    
     public function getRestaurante(): ?Restaurante
     {
         return $this->restaurante;

@@ -22,11 +22,6 @@ class Datos
     /**
      * @ORM\Column(type="integer")
      */
-    private $total_clientes;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $total_opiniones;
 
     /**
@@ -57,18 +52,6 @@ class Datos
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTotalClientes(): ?int
-    {
-        return $this->total_clientes;
-    }
-
-    public function setTotalClientes(int $total_clientes): self
-    {
-        $this->total_clientes = $total_clientes;
-
-        return $this;
     }
 
     public function getTotalOpiniones(): ?int

@@ -1,0 +1,36 @@
+{% extends "layout_admin.html.twig" %}
+
+{% block title %}Imagenes{% endblock %}
+{% block main %}
+{% if is_granted('ROLE_ADMIN') %}
+
+<p class="display-4">Ver imagenes <i class="fas fa-images"></i></p>
+<hr />
+<div class="content">
+  <p class="lead">Las imagenes que se muestran a continuación son las mismas que se verán en su perfil.</p>
+  <div class="row">
+    {% for flash_message in app.session.flashbag.get('error-subida-img') %}
+      <div class="alert alert-danger">
+        {{ flash_message }}
+      </div>
+    {% endfor %}
+
+    {% if imagenes != null %}
+      {% for imagen in imagenes %}
+          <div class="col-5 shadow-sm p-3 mb-5 bg-white rounded">
+            <div class="card" style="margin:5px;">
+                <img src="{{ asset('restaurantesIMG/'~imagen.imagen.imagen) }}" class="img-fluid" width="auto" height="auto" alt="imagenes-restaurantes">
+                <div class="card-body">
+                  <a href="{{ path('eliminar-img',{'id':imagen.id, 'idadmin':app.user.id})}}" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+          </div>
+      {% endfor %}
+      {% else %}
+        <p class="lead" style="margin: auto; color:red">Aún no tienes Imagenes subidas.</p>
+    {% endif %}
+
+  </div>
+</div>
+{% endif %}
+{% endblock %}

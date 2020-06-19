@@ -1,0 +1,26 @@
+{% extends "perfil_usuario.html.twig" %}
+
+{% block title %} Reseña {% endblock %}
+{% block main %}
+{% if is_granted('ROLE_USER') %}
+
+<h1 class="display-4">Reseña</h1>
+<p class="lead">En <strong>ReservasRes</strong> te damos la oportunidad de puntuar y compartir tu opinión con la comunidad y asi tener mas criterio para una mejor decisión.</p>
+<div class="row">
+    <div class="col-9">
+        <div style="margin-bottom:20px" class="border shadow-sm p-3 mb-5">
+          {% form_theme form 'bootstrap_4_layout.html.twig' %}
+          {{ form_start(form)}}
+          {{ form_widget(form) }}
+          {{ form_end(form) }}
+        </div>
+        <p class="lead">Se prudente y breve, valoramos tu comentario.</p>
+    </div>
+    <div class="col border text-center">
+        <p class="h1">Puntuación <i class="fab fa-microblog"></i></p>
+        <hr />
+        <h1 id="ver" style="color:#4917C4; font-size:200px;"></h1>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

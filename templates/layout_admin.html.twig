@@ -1,14 +1,105 @@
-{% extends "layout.html.twig" %}
+{% extends "base.html.twig"%}
+{% block title %}Inicio admin{% endblock %}
 
-{% block title %} Inicio - admin {% endblock %}
+{% block body %} 
+{% if is_granted('ROLE_ADMIN') %}
+    {% block nav %}
+    <nav class="d-none d-sm-block d-md-none d-block d-sm-none">
+        <div class="fixed-top">
+            <div class="collapse" id="navbarToggleExternalContent">
+                <div class="bg-dark p-4">
+                <table class="float-right">
+                    <tr>
+                        <td class="btn-group">
+                            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if app.user %}
+                                    <span><strong>{{ app.user.nombre }}</strong></span>
+                                {% endif %}
+                                <i class="fas fa-user-circle fa-3x"></i>
+                            </button>
+                            {% if app.user %}
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="{{ path('admin_edit', {'id':app.user.id}) }}"><button class="dropdown-item" type="button"><i class="fas fa-user"></i></i> Perfil</button></a>
+                                    <a href="{{ path('restaurante_edit',{'id':app.user.id})}}"><button class="dropdown-item" type="button"><i class="fas fa-store"></i> Restaurante</button></a>
+                                    <a href="{{ path('logout') }}"><button class="dropdown-item" type="button"><i class="fas fa-sign-out-alt"></i> Salir</button></a>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>  
+                </table>            
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active"><a class="nav-link" href="{{ path('inicio-admin')}}"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('admin-reservas',{'id':app.user.id})}}"><i class="fas fa-utensils"></i> Reservas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('restaurante_datos',{'id':app.user.id}) }}"><i class="fas fa-table"></i> Datos reservas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('admin_opiniones',{'id':app.user.id}) }}"><i class="fas fa-comment"></i> Opiniones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('subir-imagenes',{'id':app.user.id} )}}"><i class="fas fa-file-upload"></i> Subir imagen</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('imagenes-admin',{'id':app.user.id} )}}"><i class="fas fa-images"></i> Ver imagenes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('restaurante_info',{'id':app.user.id} )}}"><i class="fas fa-newspaper"></i> Informacion y presentación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('promocion',{'id':app.user.id} )}}"><i class="fas fa-percentage"></i> Promociones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('promociones',{'id':app.user.id} )}}"><i class="fas fa-stream"></i> Ver Ofertas</a></li>
 
-{% block body %}
+                </ul>
+            </div>
+            </div>
+            <nav class="navbar navbar-dark bg-dark">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            </nav>
+        </div>
+    </nav>
 
-    <header class="text-center">
-    {% block header %}
-        {{"now"| date("m/d/Y")}}    
+    <nav class="navbar navbar-light bg-dark d-none d-md-block">
+        <div class="btn-group dropright">
+            <button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if app.user %}
+                    <span><strong>{{ app.user.nombre }}</strong></span>
+                {% endif %}
+                <i class="fas fa-user-circle fa-3x"></i>
+            </button>
+            <div class="dropdown-menu">
+                {% if app.user %}
+                <a href="{{ path('admin_edit', {'id':app.user.id}) }}"><button class="dropdown-item" type="button"><i class="fas fa-user"></i> Perfil</button></a>
+                <a href="{{ path('restaurante_edit',{'id':app.user.id})}}"><button class="dropdown-item" type="button"><i class="fas fa-store"></i> Restaurante</button></a>
+                <a href="{{ path('logout') }}"><button class="dropdown-item" type="button"><i class="fas fa-sign-out-alt"></i> Salir</button></a>
+            {% endif %}
+            </div>
+        </div>
+    </nav>
     {% endblock %}
-    </header>
-
     
+    <div class="container-fluid">
+            <div class="row" style="margin-top: 60px;">
+                <div class="col-2 d-none d-md-block shadow-sm p-3 mb-5 bg-white rounded" >
+                    <nav class="nav flex-column bg-ligth">
+                        {% if app.user %}
+                            <a class="nav-link active" href="{{ path('inicio-admin')}}"><i class="fas fa-home"></i> Inicio</a>
+                            <a class="nav-link active" href="{{ path('admin-reservas',{'id':app.user.id})}}"><i class="fas fa-utensils"></i> Reservas</a>
+                            <a class="nav-link" href="{{ path('restaurante_datos',{'id':app.user.id}) }}"><i class="fas fa-table"></i> Datos sobre reserva</a>
+                            <a class="nav-link" href="{{ path('admin_opiniones',{'id':app.user.id}) }}"><i class="fas fa-comment"></i> Opiniones</a>
+                            <a class="nav-link" href="{{ path('subir-imagenes',{'id':app.user.id} )}}"><i class="fas fa-file-upload"></i> Subir imagen</a>
+                            <a class="nav-link" href="{{ path('imagenes-admin',{'id':app.user.id} )}}"><i class="fas fa-images"></i> Ver imagenes</a>
+                            <a class="nav-link" href="{{ path('restaurante_info',{'id':app.user.id} )}}"><i class="fas fa-newspaper"></i> Informacion y presentacion</a>
+                            <a class="nav-link" href="{{ path('promocion',{'id':app.user.id} )}}"><i class="fas fa-percentage"></i> Promociones</a>
+                            <a class="nav-link" href="{{ path('promociones',{'id':app.user.id} )}}"><i class="fas fa-stream"></i> Ver ofertas</a>
+                        {% endif %}
+                    </nav>
+                </div>
+
+                <div class="col-10 shadow-sm p-3 mb-5 bg-white rounded">
+                {% block main %}
+                    <div class="text-center">
+                        <img src="{{ asset('img/logoinicio.png')}}" alt="logo-inicio">
+                        <hr />
+                        <p class="text-center text-md-left">© 2020 Copyright:
+                            <a href="">
+                                <strong> ReservasRes.com</strong>
+                            </a>
+                        </p>   
+                    </div>
+                {% endblock %}
+                </div>
+            </div>
+    </div>
+{% endif %}
 {% endblock %}
